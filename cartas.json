@@ -1,0 +1,79 @@
+[
+    {
+        "nome": "Fogo1",
+        "caminho_imagem": "Imagens/Fogo1.png",
+        "valor": 1
+    },
+    {
+        "nome": "Fogo2",
+        "caminho_imagem": "Imagens/Fogo2.png",
+        "valor": 2
+    },
+    {
+        "nome": "Fogo3",
+        "caminho_imagem": "Imagens/Fogo3.png",
+        "valor": 3
+    },
+    {
+        "nome": "Gelo1",
+        "caminho_imagem": "Imagens/Gelo1.png",
+        "valor": 4
+    },
+    {
+        "nome": "Gelo2",
+        "caminho_imagem": "Imagens/Gelo2.png",
+        "valor": 5
+    },
+    {
+        "nome": "Gelo3",
+        "caminho_imagem": "Imagens/Gelo3.png",
+        "valor": 6
+    },
+
+    {
+        "nome": "Terra1",
+        "caminho_imagem": "Imagens/Terra1.png",
+        "valor": 7
+    },
+    {
+        "nome": "Terra2",
+        "caminho_imagem": "Imagens/Terra2.png",
+        "valor": 8
+    },
+    {
+        "nome": "Terra3",
+        "caminho_imagem": "Imagens/Terra3.png",
+        "valor": 9
+    },
+    {
+        "nome": "Trevas1",
+        "caminho_imagem": "Imagens/Trevas1.png",
+        "valor": 10
+    },
+    {
+        "nome": "Trevas2",
+        "caminho_imagem": "Imagens/Trevas2.png",
+        "valor": 11
+    },
+    {
+        "nome": "Trevas3",
+        "caminho_imagem": "Imagens/Trevas3.png",
+        "valor": 12
+    },
+    {
+        "nome": "Arcano1",
+        "caminho_imagem": "Imagens/Arcano1.png",
+        "valor": 13
+    },
+    {
+        "nome": "Arcano2",
+        "caminho_imagem": "Imagens/Arcano2.png",
+        "valor": 14
+    },
+    {
+        "nome": "Arcano3",
+        "caminho_imagem": "Imagens/Arcano3.png",
+        "valor": 15
+    }   
+
+]
