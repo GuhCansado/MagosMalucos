@@ -35,13 +35,14 @@ while rodando:
             #(Pronto, Nivel_concluido, Lista_Caixas, Proximo_Estado)
             _, Nivel_concluido, Lista_Caixas, estado_seguinte = resultado_jogo
             #print(f"Resultado do Nível {Nivel_concluido}: {Lista_Caixas}") 
-            status_ord, lista_ordenada, novo_nivel, novo_xp_restante, proximo_estado_ord = \
-                ordenacao.processar_ordenacao(Lista_Caixas, xp, Nivel)
+            status_interno, novo_nivel, novo_xp_restante, proximo_estado = ordenacao.tela_processamento_ordenacao(
+                screen, Lista_Caixas, xp, Nivel
+            )
             Nivel = novo_nivel
             xp = novo_xp_restante 
             print(f"Estado Atualizado: Nível={Nivel}, XP={xp}")
-            proximo_estado = proximo_estado_ord 
-            
+            proximo_estado = proximo_estado
+
         else:
             proximo_estado = resultado_jogo
 
