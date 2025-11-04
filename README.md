@@ -1,57 +1,74 @@
-# 🃏 Card Blocker
+# 🪄 Magos Malucos: O Desafio da Ordenação Mágica
 
-Um jogo de cartas em Pygame onde o desafio é preencher a linha de slots sem colocar cartas com valores proibidos lado a lado.
+![Carta de mago — Imagem de capa](Imagens/Arcano1.png)
 
-## ✨ Visão Geral do Jogo
+Bem-vindo a **Magos Malucos**, um jogo desenvolvido em Pygame-CE que mistura estratégia de cartas com o desafio clássico de algoritmos de ordenação. Sua missão é organizar as cartas em seus slots inferiores em ordem crescente para acumular Experiência (XP) e subir de Nível!
 
-O objetivo principal é completar a **linha de slots** com cartas da sua **mão**, respeitando a regra de que certos pares de valores de cartas não podem ser adjacentes. Ao preencher todos os slots sem violações, você completa a rodada e avança no jogo!
+## 🚀 Como Jogar
 
----
+O objetivo principal do jogo é organizar as cartas nos **4 Slots** inferiores em **ordem crescente de seus valores** para maximizar seu XP a cada rodada.
 
-## 🎲 Como Jogar
+### 🃏 A Tela de Jogo
 
-### O Jogo Principal
+| Área | Descrição |
+| :--- | :--- |
+| **Mão de Cartas** (Topo) | É onde suas cartas iniciais estão. Arraste as cartas daqui para os Slots. |
+| **Slots** (Embaixo) | Quatro espaços vazios onde as cartas são colocadas. Sua ordem final aqui é o que será avaliado. |
+| **Nível e XP** (Canto Superior) | Indica seu progresso atual. |
+| **Botão `+ Cartas`** | Limpa sua mão e gera 4 novas cartas aleatórias. |
+| **Botão `Finalizar Jogada`** | Inicia a avaliação da rodada. Só fica disponível quando todos os Slots estão preenchidos. |
 
-1.  **Sua Mão:** No topo da tela, você tem uma **Mão** de cartas.
-2.  **Slots:** Na parte inferior, há uma linha de **Slots** vazios (espaços para cartas).
-3.  **Mecânica:** Use o mouse para **arrastar** as cartas da sua Mão para os Slots.
-4.  **Movimentação:**
-    * Você pode mover cartas da Mão para um Slot vazio.
-    * Você pode mover cartas de um Slot para outro Slot vazio.
-    * Você pode **trocar** uma carta arrastada por uma carta já presente em um Slot.
-    * Se você soltar a carta fora de um Slot, ela volta para sua posição de origem (Mão ou Slot anterior).
+### 🧠 Regras de Ação
 
-### A Regra de Proibição de Adjacência (O Desafio)
+1.  **Arraste e Solte (Drag & Drop):** Mova as cartas entre a Mão e os Slots.
+2.  **Troca de Slots:** Arrastar uma carta para um Slot já ocupado fará com que as cartas troquem de lugar.
+3.  **Devolver para a Mão:** Arrastar uma carta de um Slot e soltá-la em um lugar que **não seja outro Slot** fará com que ela retorne à sua Mão.
 
-O núcleo do jogo é a regra que impede que certos valores de cartas fiquem lado a lado.
+### 🛑 Regra de Proibição Mágica
 
-| Grupo de Valores (A) | Valores Proibidos Adjacentes (B) |
-| :------------------: | :------------------------------: |
-| $\{1, 2, 3, 7, 8, 9\}$ | $\{4, 5, 6, 10, 11, 12\}$ |
-| $\{4, 5, 6, 10, 11, 12\}$ | $\{1, 2, 3, 7, 8, 9\}$ |
+Existe uma regra de adjacência mágica que você **DEVE** evitar:
 
-> **Exemplo:** Se uma carta com valor `2` (Grupo A) estiver em um Slot, os Slots vizinhos (adjacentes) **não podem** conter cartas com valores do Grupo B (como `4` ou `10`).
+* **Valores Proibidos:** Cartas com valores `[1, 2, 3, 7, 8, 9]` **não podem** ficar imediatamente ao lado de cartas com valores `[4, 5, 6, 10, 11, 12]`.
 
-### Finalizando a Rodada
+Se você tentar finalizar a jogada com uma proibição ativa, a jogada será cancelada, e você receberá uma mensagem de erro na tela.
 
-* O botão **"Finalizar Rodada"** só estará ativo quando **todos os Slots estiverem preenchidos**.
-* **Vitória:** Se você clicar em "Finalizar Rodada" e não houver nenhuma proibição de adjacência, você avança no jogo.
-* **Derrota/Aviso:** Se você clicar em "Finalizar Rodada" e houver uma violação, uma **mensagem de erro** será exibida (ex: *"IMPOSSÍVEL JOGAR AQUI! 2 e 4 não podem estar juntos!"*). Você deve reposicionar as cartas para resolver a proibição.
+### ⭐ Ganhando e Perdendo XP
 
-### Botões de Controle
+Após apertar **Finalizar Jogada**, o jogo avalia se a ordem de suas cartas corresponde à ordem crescente correta.
 
-| Botão | Ação |
-| :---: | :--- |
-| **Cartas** | Descarta as cartas atuais da Mão e gera uma **nova Mão** aleatória (as cartas nos Slots não são afetadas). |
-| **Finalizar Rodada** | Verifica a regra de proibição e finaliza a rodada (só ativo com todos os Slots preenchidos). |
+| Resultado da Avaliação | Pontuação |
+| :--- | :--- |
+| ✅ **Posição Correta:** A carta está na **posição exata** que deveria estar na ordem crescente. | **+5 XP** |
+| ❌ **Posição Incorreta:** A carta está em uma **posição diferente** da correta. | **-1 XP** |
 
----
+Seu XP mínimo é 0.
 
-## 🛠️ Instalação e Execução
+### 📈 Nível e Progresso
+
+* A cada **10 XP** acumulados, você sobe **1 Nível**.
+* Ao subir de Nível, o XP é resetado, e o XP restante se torna seu novo XP base.
+* **Nota:** Após finalizar a jogada, uma tela de processamento temporária aparecerá por 5 segundos, exibindo o resultado detalhado do cálculo de XP antes de retornar à tela de jogo.
+
+## ⚙️ Configuração (Para Desenvolvedores)
 
 ### Pré-requisitos
 
-Certifique-se de ter o Python e o Pygame instalados:
+Certifique-se de ter o Python 3.10 ou superior instalado.
 
+### Instalação
+
+1.  Clone o repositório:
+    ```bash
+    git clone [LINK_DO_SEU_REPOSITÓRIO]
+    cd MagosMalucos
+    ```
+2.  Instale as dependências:
+    ```bash
+    pip install pygame-ce
+    ```
+
+### Execução
+
+Para iniciar o jogo:
 ```bash
-pip install pygame
+python Pygame_main.py
