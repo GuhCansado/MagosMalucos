@@ -1,76 +1,57 @@
-***
+# 🃏 Card Blocker
 
-# 🧙‍♂️ MaGos MALucos 🃏
+Um jogo de cartas em Pygame onde o desafio é preencher a linha de slots sem colocar cartas com valores proibidos lado a lado.
 
-## Quebra-Cabeça de Cartas com Regras de Adjacência
+## ✨ Visão Geral do Jogo
 
-**MaGos MALucos** é um jogo de lógica e quebra-cabeça desenvolvido em Python utilizando a biblioteca Pygame.
+O objetivo principal é completar a **linha de slots** com cartas da sua **mão**, respeitando a regra de que certos pares de valores de cartas não podem ser adjacentes. Ao preencher todos os slots sem violações, você completa a rodada e avança no jogo!
 
-O objetivo principal é preencher os **4 Slots** disponíveis com cartas da sua mão, garantindo que as rigorosas regras de proibição de adjacência (vizinhos) sejam respeitadas. Ao encontrar um arranjo válido, o jogador clica em "Finalizar Rodada" para avançar.
+---
 
-***
+## 🎲 Como Jogar
 
-## 🌟 Regra Principal: A Proibição Mágica
+### O Jogo Principal
 
-A lógica central do jogo reside na função `verificar_proibicao_adjacencia` (presente em `jogo.py`), que impõe uma única regra:
+1.  **Sua Mão:** No topo da tela, você tem uma **Mão** de cartas.
+2.  **Slots:** Na parte inferior, há uma linha de **Slots** vazios (espaços para cartas).
+3.  **Mecânica:** Use o mouse para **arrastar** as cartas da sua Mão para os Slots.
+4.  **Movimentação:**
+    * Você pode mover cartas da Mão para um Slot vazio.
+    * Você pode mover cartas de um Slot para outro Slot vazio.
+    * Você pode **trocar** uma carta arrastada por uma carta já presente em um Slot.
+    * Se você soltar a carta fora de um Slot, ela volta para sua posição de origem (Mão ou Slot anterior).
 
-**Nenhuma carta do Grupo 1 pode estar imediatamente ao lado (adjacente) de uma carta do Grupo 2.**
+### A Regra de Proibição de Adjacência (O Desafio)
 
-### Divisão dos Elementos
+O núcleo do jogo é a regra que impede que certos valores de cartas fiquem lado a lado.
 
-As cartas são categorizadas por seus valores numéricos (de 1 a 15):
+| Grupo de Valores (A) | Valores Proibidos Adjacentes (B) |
+| :------------------: | :------------------------------: |
+| $\{1, 2, 3, 7, 8, 9\}$ | $\{4, 5, 6, 10, 11, 12\}$ |
+| $\{4, 5, 6, 10, 11, 12\}$ | $\{1, 2, 3, 7, 8, 9\}$ |
 
-* **Grupo 1 (Permissivos):** Valores $1, 2, 3$ (Fogo), $7, 8, 9$ (Terra), $13, 14, 15$ (Arcano). Estes podem ser vizinhos uns dos outros, mas **não** do Grupo 2.
-* **Grupo 2 (Proibitivos):** Valores $4, 5, 6$ (Gelo), $10, 11, 12$ (Trevas). Estes podem ser vizinhos uns dos outros, mas **não** do Grupo 1.
+> **Exemplo:** Se uma carta com valor `2` (Grupo A) estiver em um Slot, os Slots vizinhos (adjacentes) **não podem** conter cartas com valores do Grupo B (como `4` ou `10`).
 
-> ❌ **Exemplo Proibido:** Fogo (Valor 1) $\leftrightarrow$ Gelo (Valor 4)
->
-> ✅ **Exemplo Permitido:** Arcano (Valor 13) $\leftrightarrow$ Terra (Valor 7)
+### Finalizando a Rodada
 
-***
+* O botão **"Finalizar Rodada"** só estará ativo quando **todos os Slots estiverem preenchidos**.
+* **Vitória:** Se você clicar em "Finalizar Rodada" e não houver nenhuma proibição de adjacência, você avança no jogo.
+* **Derrota/Aviso:** Se você clicar em "Finalizar Rodada" e houver uma violação, uma **mensagem de erro** será exibida (ex: *"IMPOSSÍVEL JOGAR AQUI! 2 e 4 não podem estar juntos!"*). Você deve reposicionar as cartas para resolver a proibição.
 
-## 🎮 Como Jogar (Mecânicas)
+### Botões de Controle
 
-1.  **Início:** Pressione **ESPAÇO** na tela de menu.
-2.  **Mover:** Use o mouse para **arrastar e soltar** as cartas da sua Mão para um dos 4 Slots na parte inferior da tela.
-3.  **Trocar:** Se um Slot já estiver ocupado, o ato de arrastar uma nova carta para ele **troca a posição** das duas cartas.
-4.  **Nova Mão:** Use o botão "Cartas" para renovar sua mão com 4 cartas aleatórias.
-5.  **Validação:** Clique em **"Finalizar Rodada"** após preencher todos os 4 Slots. O jogo notificará se houver uma quebra de regra.
+| Botão | Ação |
+| :---: | :--- |
+| **Cartas** | Descarta as cartas atuais da Mão e gera uma **nova Mão** aleatória (as cartas nos Slots não são afetadas). |
+| **Finalizar Rodada** | Verifica a regra de proibição e finaliza a rodada (só ativo com todos os Slots preenchidos). |
 
-***
+---
 
-## ⚙️ Estrutura Detalhada do Código
+## 🛠️ Instalação e Execução
 
-O projeto é modular, permitindo que cada arquivo Pygame lide com uma responsabilidade específica, facilitando a organização.
+### Pré-requisitos
 
-### 1. Núcleo e Fluxo do Jogo
+Certifique-se de ter o Python e o Pygame instalados:
 
-* **`Pygame_main.py`**:
-    * É o **ponto de entrada** e o loop principal do jogo.
-    * Gerencia a transição de estados (`menu`, `jogo`, `ordenacao`).
-* **`jogo.py`**:
-    * Contém o *game loop* do nível ativo.
-    * Implementa toda a lógica de interação (clique, arrasto e soltura de cartas).
-    * Define as constantes **`LISTA_VALORES_PROIBIDOS_1/2`** e a função de validação **`verificar_proibicao_adjacencia`**.
-* **`tela_menu.py`**:
-    * Responsável por desenhar a tela inicial, incluindo o título "MaGos MALucos".
-* **`ordenacao.py`**:
-    * Módulo destinado a simular o **processamento pós-rodada** (`processar_ordenacao`), preparando os dados para o próximo nível.
-
-### 2. Componentes e Dados
-
-* **`cartas.py`**:
-    * Define a classe fundamental **`Carta`**, que lida com a imagem, valor, nome e a mecânica de arrasto no Pygame.
-* **`cartas.json`**:
-    * O arquivo de dados essencial que armazena a lista estática de todas as cartas, mapeando o `nome` e `caminho_imagem` para o **`valor` numérico**.
-* **`Slots.py`**:
-    * Define a classe **`Slot`**, que representa o espaço onde as cartas devem ser posicionadas, gerenciando a sua visualização e posicionamento na tela.
-* **`interface.py`**:
-    * Módulo de utilitários de UI, definindo a **`class Botao`** e a função **`caixa_mensagem`** para notificações de erro.
-
-### 3. Utilitários (Expansão e Suporte)
-
-* **`ValidarImagem.py`**: Contém funções como `iniciar_geracao_e_validar`, sugerindo um sistema para lidar com o carregamento, redimensionamento ou, possivelmente, a geração de ativos gráficos dinamicamente.
-* **`InputBox.py`**: Utilitário que define a `class InputBox` para capturar entrada de texto (não usada no *game loop* principal, mas pronta para debug ou futuros campos de nome/configuração).
-
-***
+```bash
+pip install pygame
