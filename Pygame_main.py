@@ -27,7 +27,7 @@ while rodando:
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                 proximo_estado = "jogo"
 
-    # Lógica de Jogo
+    # jogo --------------------
     elif estado == "jogo":
         resultado_jogo = jogo.tela_jogo(screen, estado, Nivel)
         
@@ -46,7 +46,7 @@ while rodando:
         else:
             proximo_estado = resultado_jogo
 
-    # Lógica de QUIT
+    #QUIT
     elif estado == "sair":
         rodando = False
         

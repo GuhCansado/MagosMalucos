@@ -6,7 +6,6 @@ import time
 # --- Funções Auxiliares (mantidas) ---
 
 def bubble_sort(lista):
-    """Implementa o algoritmo Bubble Sort."""
     n = len(lista)
     lista_ordenada = copy.copy(lista) 
     
@@ -21,16 +20,8 @@ def bubble_sort(lista):
 # NOVA TELA: tela_processamento_ordenacao (Substituindo processar_ordenacao)
 # -------------------------------------------------------------
 def tela_processamento_ordenacao(screen, lista_caixas_jogador, xp_atual, nivel_atual):
+
     """
-    Tela de jogo independente que processa a ordenação, exibe o resultado
-    por 5 segundos e retorna o novo estado do jogador e o próximo estado de jogo.
-
-    Args:
-        screen (pygame.Surface): A superfície principal do jogo.
-        lista_caixas_jogador (list): A lista de valores de cartas na ordem do jogador.
-        xp_atual (int): O valor de XP atual do jogador.
-        nivel_atual (int): O nível atual do jogador.
-
     Retorna:
         tuple: (status_interno, novo_nivel, novo_xp_restante, proximo_estado_global)
     """

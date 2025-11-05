@@ -23,7 +23,6 @@ ESPACO_SLOTS = 10
 X_MAO = 50
 Y_MAO = 50
 
-# --- Funções Utilitárias ---
 def verificar_proibicao_adjacencia(slots):
     global valores_verificados1, valores_verificados2
     valores_nos_slots = [s.carta_colocada.valor if s.carta_colocada else None for s in slots]
@@ -87,7 +86,7 @@ def tela_jogo(screen, estado_atual, nivel):
     fonte_nivel = criar_fonte(36)
     rodando_jogo = True
 
-    # --- Lógica de Layout e Devolução (Não encapsulada) ---
+    # --- Lógica de Layout e Devolução---
     def recalcular_layout_mao():
         for i, c in enumerate(cartas_na_mao):
             c.rect.topleft = (X_MAO + i * (LARGURA_CARTA + ESPACO_SLOTS), Y_MAO)
