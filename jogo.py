@@ -25,7 +25,7 @@ Y_MAO = 50
 
 def verificar_proibicao_adjacencia(slots):
     global valores_verificados1, valores_verificados2
-    valores_nos_slots = [s.carta_colocada.valor if s.carta_colocada else None for s in slots]
+    valores_nos_slots = [s.valor_slot if s.valor_slot else None for s in slots]
 
     for i in range(len(valores_nos_slots) - 1):
         a, b = valores_nos_slots[i], valores_nos_slots[i + 1]
@@ -72,7 +72,38 @@ def tela_jogo(screen, estado_atual, nivel):
     x_inicial = (TELA_LARGURA - largura_total_slots) // 2
     y_slots = TELA_ALTURA - 190
 
-    SLOTS = [Slot(x_inicial + i * (LARGURA_CARTA + ESPACO_SLOTS), y_slots, LARGURA_CARTA, ALTURA_CARTA)
+    # --- Adição: Slot com suporte a pilha ---
+    class SlotPilha:
+        def __init__(self, x, y, largura, altura):
+            self.rect = pygame.Rect(x, y, largura, altura)
+            self.cartas_pilhadas = []
+
+        def colocar_carta(self, carta):
+            self.cartas_pilhadas = [carta]
+            carta.rect.topleft = self.rect.topleft
+
+        def empilhar_carta(self, carta):
+            if len(self.cartas_pilhadas) < 2:
+                self.cartas_pilhadas.append(carta)
+                # desloca um pouco a segunda carta pra dar efeito visual
+                carta.rect.topleft = (self.rect.x + 10 * len(self.cartas_pilhadas), self.rect.y + 10 * len(self.cartas_pilhadas))
+                return True
+            return False
+
+        def desenhar(self, screen):
+            pygame.draw.rect(screen, (200, 200, 200), self.rect, 2)
+            for carta in self.cartas_pilhadas:
+                carta.desenhar(screen)
+
+        @property
+        def valor_slot(self):
+            return sum(carta.valor for carta in self.cartas_pilhadas) if self.cartas_pilhadas else None
+
+        @property
+        def carta_colocada(self):
+            return self.cartas_pilhadas[-1] if self.cartas_pilhadas else None
+
+    SLOTS = [SlotPilha(x_inicial + i * (LARGURA_CARTA + ESPACO_SLOTS), y_slots, LARGURA_CARTA, ALTURA_CARTA)
              for i in range(NUM_SLOTS)]
 
     cartas_na_mao = gerar_mao_aleatoria(TODOS_DADOS_CARTAS, LARGURA_CARTA, ESPACO_SLOTS)
@@ -114,14 +145,15 @@ def tela_jogo(screen, estado_atual, nivel):
                             recalcular_layout_mao()
                             continue
 
-                        slots_cheios = all(s.carta_colocada for s in SLOTS)
+                        slots_cheios = all(s.valor_slot for s in SLOTS)
                         if slots_cheios and botao_finalizar.verificar_clique(event):
                             if verificar_proibicao_adjacencia(SLOTS):
                                 caixa_mensagem(screen, f"IMPOSSÍVEL! {valores_verificados1} e {valores_verificados2} não podem estar juntos!", TELA_LARGURA // 2, TELA_ALTURA // 2, 2000)
                                 tempo_fim_mensagem_proibida = pygame.time.get_ticks() + 2000
                             else:
-                                valores_slots = [s.carta_colocada.valor for s in SLOTS]
-                                for s in SLOTS: s.carta_colocada = None
+                                valores_slots = [s.valor_slot for s in SLOTS]
+                                for s in SLOTS:
+                                    s.cartas_pilhadas.clear()
                                 return ('Pronto', nivel, valores_slots, 'menu') 
                         
                         # Iniciar drag
@@ -134,7 +166,7 @@ def tela_jogo(screen, estado_atual, nivel):
                                 for slot in SLOTS:
                                     if slot.carta_colocada and slot.carta_colocada.iniciar_arrasto(mouse_pos):
                                         carta_sendo_arrastada, slot_original_da_carta = slot.carta_colocada, slot
-                                        slot.carta_colocada = None
+                                        slot.cartas_pilhadas.remove(slot.carta_colocada)
                                         break
 
                 case pygame.MOUSEMOTION:
@@ -148,9 +180,16 @@ def tela_jogo(screen, estado_atual, nivel):
                         
                         for slot in SLOTS:
                             if slot.rect.colliderect(carta_sendo_arrastada.rect):
+
+                                if nivel >= 2 and slot.carta_colocada is not None:
+                                    if slot.empilhar_carta(carta_sendo_arrastada):
+                                        if carta_sendo_arrastada in cartas_na_mao:
+                                            cartas_na_mao.remove(carta_sendo_arrastada)
+                                        soltou_em_alvo = True
+                                        break
+
                                 carta_alvo_no_slot = slot.carta_colocada
                                 
-                                # Coloca/Troca
                                 if carta_alvo_no_slot is None:
                                     slot.colocar_carta(carta_sendo_arrastada)
                                     if slot_original_da_carta is None and carta_sendo_arrastada in cartas_na_mao:
@@ -189,7 +228,7 @@ def tela_jogo(screen, estado_atual, nivel):
              carta.desenhar(screen)
 
         botao_novas_cartas.desenhar(screen)
-        if all(s.carta_colocada for s in SLOTS):
+        if all(s.valor_slot for s in SLOTS):
             botao_finalizar.desenhar(screen)
 
         if carta_sendo_arrastada:
